@@ -9,15 +9,15 @@ from copy import deepcopy
 #Deadline 15/5/2016
 COLUMN=9
 ROWS=9
-arr=[[0,0,3,0,2,0,6,0,0],
-     [9,0,0,3,0,5,0,0,1],
-     [0,0,1,8,0,6,4,0,0],
-     [0,0,8,1,0,2,9,0,0],
-     [7,0,0,0,0,0,0,0,8],
-     [1,0,6,7,0,8,2,0,0],
-     [0,0,2,6,0,9,5,0,0],
-     [8,0,0,2,0,3,0,0,9],
-     [0,0,5,0,1,0,3,0,0]]
+arr=[[2,3,5,0,0,0,0,0,4],
+     [0,0,0,6,9,0,2,0,5],
+     [6,8,9,0,4,5,1,3,7],
+     [0,1,0,0,0,4,7,9,0],
+     [0,0,0,8,1,2,3,0,0],
+     [0,6,8,7,0,0,0,0,2],
+     [0,2,1,5,0,0,0,4,9],
+     [9,0,6,4,2,1,0,0,0],
+     [4,0,0,9,0,0,0,2,1]]
 listss=[1,2,3,4,5,6,7,8,9]
 class Game:
     
@@ -94,12 +94,17 @@ class Game:
         var=self.finished(b)
         result=deepcopy(b)
         for value in self.checkValue(arr,listss,var[0], var[1]):
-            print ("index of :",var,"Domain is:",self.checkValue(b,listss, var[0], var[1]))
+            print ("index of :",var,"Domain is:",self.checkValue(arr,listss, var[0], var[1]))
             result[var[0]][var[1]]=value 
             self.state(result)
-            print ("=============================================") 
-            if(self.ValidAssignment(var,b,value)):
+            input("Enter test")
+            print ("=============================================")
+            if  (self.finished(b)==[-1,-1]):
+                return
+            elif(self.ValidAssignment(var,b,value)):
                 result=self.CSP(result)
+        if(self.finished(b)!=[-1,-1]):
+            result[var[0]][var[1]]=0
         return result
             
         '''
