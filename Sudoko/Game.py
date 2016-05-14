@@ -18,7 +18,7 @@ arr=[[0,0,3,0,2,0,6,0,0],
      [0,0,2,6,0,9,5,0,0],
      [8,0,0,2,0,3,0,0,9],
      [0,0,5,0,1,0,3,0,0]]
-list=[1,2,3,4,5,6,7,8,9]
+listss=[1,2,3,4,5,6,7,8,9]
 class Game:
     
     
@@ -31,34 +31,34 @@ class Game:
                     print('|',arr[i][j],end="")
             print('|\n____________________________',end="\n")
     
-    def checkValue(self,list,row,col):
-        board=self.verticaleliminate(list,row)
-        board=self.horizontaleliminate(board,col)
-        board=self.tableeliminate(board,row,col)
+    def checkValue(self,arr,listss,row,col):
+        board=self.verticaleliminate(arr,listss,row)
+        board=self.horizontaleliminate(arr,board,col)
+        board=self.tableeliminate(arr,board,row,col)
         return board
         
-    def verticaleliminate(self,list,row):
-        board=deepcopy(list)
+    def verticaleliminate(self,arr,listssss,row):
+        board=deepcopy(listss)
         for j in range(COLUMN):
             if arr[row][j]>0:
                # print(i,"+",board)
-                if board.index(arr[row][j])!=-1:
+                if board.__contains__(arr[row][j]):
                 #    print(board.index(arr[j][col]))
                     board.pop(board.index(arr[row][j]))
         return board
     #Need to check the 9 element#
-    def horizontaleliminate(self,list,col):
-        board=deepcopy(list)
+    def horizontaleliminate(self,arr,listss,col):
+        board=deepcopy(listss)
         for j in range(ROWS):
             if arr[j][col]>0:
                # print(i,"+",board)
-                if board.index(arr[j][col])!=-1:
+                if board.__contains__(arr[j][col]):
                 #    print(board.index(arr[j][col]))
                     board.pop(board.index(arr[j][col]))
         return board
     
-    def tableeliminate(self,list,row,col):
-        board=deepcopy(list)
+    def tableeliminate(self,arr,listss,row,col):
+        board=deepcopy(listss)
         begi=int(row/3)
         begi=begi*3
         begj=int(col/3)
@@ -74,22 +74,32 @@ class Game:
             begi=begi+1
                 
         return board
-    def finished(self,list):
+    def finished(self,listss):
         for i in range(ROWS):
             for j in range(COLUMN):
-                if(list[i][j]==0):
+                #print (listss[i][j])
+                if listss[i][j]==0 :
                     return [i,j]
         return [-1,-1]
     
+    def ValidAssignment(self,var,board,value):
+        avlist=self.checkValue(board,listss,var[0],var[1])
+        if value in avlist:
+            return True
+        return False
     
     def CSP(self,b):
         if self.finished(b)==[-1,-1]:
             return b
         var=self.finished(b)
         result=deepcopy(b)
-        for value in self.checkValue(list, var[0], var[1]):
-            result[var[0]][var[1]]=value   
-            result=self.CSP(result)
+        for value in self.checkValue(arr,listss,var[0], var[1]):
+            print ("index of :",var,"Domain is:",self.checkValue(b,listss, var[0], var[1]))
+            result[var[0]][var[1]]=value 
+            self.state(result)
+            print ("=============================================") 
+            if(self.ValidAssignment(var,b,value)):
+                result=self.CSP(result)
         return result
             
         '''
@@ -117,10 +127,10 @@ if __name__ == '__main__':
     x= Game()
     print(arr[0][ROWS-1])
     x.state(arr)
-    b=x.verticaleliminate(list,0)
-    print(b)
-    b=x.horizontaleliminate(b, 0)
-    print(b)
-    b=x.tableeliminate(b,0,0)
-    print(b)
-    x.CSP(list)
+   # b=x.verticaleliminate(listss,0)
+    #print(b)
+   # b=x.horizontaleliminate(b, 0)
+    #print(b)
+    #b=x.tableeliminate(b,0,0)
+    #print(b)
+    x.CSP(arr)
